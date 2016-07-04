@@ -1,0 +1,62 @@
+.date {
+  position: absolute;
+  height: 250px;
+  width: 250px;
+  background-color: red;
+  border: 1px solid black;
+}
+
+
+.date-header {
+  position: absolute;
+  height: 12%;
+  width: 95%;
+  margin-left: -47.5%;
+  left: 50%;
+  top: 3%;
+  background-color: yellow;
+}
+
+
+.date-header form {
+  position: absolute;
+  width: 80%;
+  left: 50%;
+  margin-left: -40%;
+  margin-top: 1%;
+  text-align: center;
+  height: 90%;
+}
+
+
+
+.date-header form button {
+  background-color: transparent;
+  border: none;
+}
+
+
+.date-body {
+  position: absolute;
+  width: 90%;
+  height: 80%;
+  background-color: blue;
+  margin-left: -45%;
+  left: 50%;
+  bottom: 3%;
+}
+
+.date-body span {
+  display: inline-block;
+  background-color: white;
+  width: 11%;
+  height: 10%;
+  margin-left: 1%;
+  margin-top: 3%;
+  font-size: 4px;
+  text-align: center;
+}
+
+.date-date.not-this-month {
+  background-color: #ccc;
+}
