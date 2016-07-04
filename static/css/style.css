@@ -58,3 +58,11 @@
 .date-date.not-this-month {
   background-color: #ccc;
 }
+
+.date-date.today {
+  background-color: #3c3;
+}
+
+.date-date.selected {
+  background-color: #fcf;
+}

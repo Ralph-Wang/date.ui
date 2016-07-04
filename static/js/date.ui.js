@@ -57,6 +57,13 @@ var date = (function() {
   flushDay = function (date) {
     var i, len, cur, dayOf1st, lastDate;
 
+    // cleanup old date class
+    for (i = 0, len = $.spanDays.length; i < len; i++) {
+      $.spanDays[i].classList.remove("not-this-month");
+      $.spanDays[i].classList.remove("today");
+      $.spanDays[i].classList.remove("selected");
+    }
+
     dayOf1st = (new Date(date.year, date.month)).getDay();
 
     lastDate = dayOf1st + 31;/*TODO*/
@@ -64,6 +71,9 @@ var date = (function() {
     cur = 1;
     for (i = dayOf1st, len = dayOf1st + 31/*TODO*/; i < len; i++) {
         $.spanDays[i].innerText = cur;
+        if (cur === today.date) {
+          $.spanDays[i].classList.add("today");
+        }
         cur += 1;
     }
 
