@@ -9,12 +9,21 @@
 
 var date = (function() {
   var $, today, selected,
-    flushToday, flushYear, flushMonth, flushDay;
+    flushToday, flushYear, flushMonth, flushDay,
+    initModule, dateOnClick;
 
   $ = {
     selectYear: document.getElementById("date-ui-year"),
     selectMonth: document.getElementById("date-ui-month"),
     spanDays: document.getElementsByClassName("date-date")
+  };
+
+  selected = {
+    year: 0,
+    month: 0,
+    date: 0,
+    week: 0,
+    idx: null
   };
 
   today = {
@@ -93,9 +102,38 @@ var date = (function() {
   };
 
 
+  dateOnClick = function (idx) {
+    return function () {
+      if (null !== selected.idx) {
+        $.spanDays[selected.idx].classList.remove("selected");
+      }
+      this.classList.add("selected");
+      selected.idx = idx;
+      selected.year = Number($.selectYear.selectedOptions[0].innerText);
+      selected.month = Number($.selectMonth.selectedIndex);
+      selected.date = Number(this.innerText);
+      selected.week = idx % 7;
+    }
+  }
+
+  initModule = function () {
+    var i, len;
+    for (i = 0, len = $.spanDays.length; i < len; i++) {
+      $.spanDays[i].addEventListener('click', dateOnClick(i));
+    }
+  }
+
+
   flushToday();
   flushYear(today);
   flushMonth(today);
   flushDay(today);
-  return {};
+
+  initModule()
+  return {
+    debug: {
+      selected: selected,
+      today: today
+    }
+    };
 }());
