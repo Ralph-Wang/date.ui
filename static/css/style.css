@@ -2,8 +2,8 @@
   position: absolute;
   height: 230px;
   width: 240px;
-  background-color: red;
-  border: 1px solid black;
+  border: 2px solid black;
+  border-radius: 10px;
 }
 
 
@@ -14,7 +14,6 @@
   margin-left: -110px;
   left: 50%;
   top: 6px;;
-  background-color: yellow;
 }
 
 
@@ -38,15 +37,15 @@
   position: absolute;
   width: 214px;
   height: 185px;
-  background-color: blue;
   margin-left: -107px;
   left: 50%;
   bottom: 5px;
 }
 
 .date-body span {
+  border-radius: 3px;
+  font-family: monospace;
   display: inline-block;
-  background-color: white;
   width: 25px;
   height: 20px;
   margin: 3px 1px;
@@ -55,14 +54,19 @@
   text-align: center;
 }
 
+.date-body .date-week {
+  font-weight: bolder;
+}
+
 .date-date.previous-month, .date-date.next-month{
-  background-color: #ccc;
+  color: #ccc;
 }
 
 .date-date.today {
-  background-color: #3c3;
+  background-color: #cfbefd;
 }
 
 .date-date.selected {
-  background-color: #fcf;
+  color: #fff;
+  background-color: #3077b5;
 }
