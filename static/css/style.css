@@ -52,6 +52,7 @@
   font-size: 12px;
   line-height: 20px;
   text-align: center;
+  cursor: pointer;
 }
 
 .date-body .date-week {

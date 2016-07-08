@@ -23,14 +23,17 @@ var date = (function() {
   };
 
   MyDate = function () {
-    return {
-      year: 0,
-      month: 0,
-      date: 0,
-      week: 0,
-      idx: null
-    }
+      this.year = 0;
+      this.month = 0;
+      this.date = 0;
+      this.idx = 0;
   }
+
+  MyDate.prototype.toString = function () {
+    return this.year + '.' + this.month + '.' + this.date + '.' + this.idx;
+  }
+
+
 
   selected = new MyDate();
 
@@ -89,6 +92,7 @@ var date = (function() {
         }
         if (cur == selected.date && date.year === selected.year && date.month === selected.month) {
           $.spanDays[i].classList.add("selected");
+          selected.idx = i;
         }
         if (cur === date.date) {
           date.idx = i;
@@ -121,11 +125,17 @@ var date = (function() {
       selected.idx = idx;
       selected.year = Number($.selectYear.selectedOptions[0].innerText);
       if (-1 !== this.className.indexOf("next-month")) {
-        // TODO flush the date board
         selected.month = Number($.selectMonth.selectedIndex + 1);
+        if (-1 === selected.month) {
+          selected.month = 11;
+          selected.year -= 1;
+        }
       } else if (-1 !== this.className.indexOf("previous-month")) {
-        // TODO flush the date board
         selected.month = Number($.selectMonth.selectedIndex - 1);
+        if (12 === selected.month) {
+          selected.month = 0;
+          selected.year += 1;
+        }
       } else {
         selected.month = Number($.selectMonth.selectedIndex);
       }
@@ -157,10 +167,11 @@ var date = (function() {
     cur.month = Number($.selectMonth.selectedIndex);
     selected = document.getElementsByClassName("selected");
     if (0 !== selected.length) {
-      cur.date = Number(document.getElementsByClassName("selected")[0].innerText);
+      cur.date = Number(selected[0].innerText);
     } else {
       cur.date = null;
     }
+
     return cur;
   }
 
