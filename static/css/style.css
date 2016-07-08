@@ -55,7 +55,7 @@
   text-align: center;
 }
 
-.date-date.not-this-month {
+.date-date.previous-month, .date-date.next-month{
   background-color: #ccc;
 }
 
