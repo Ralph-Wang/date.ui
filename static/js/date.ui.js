@@ -10,8 +10,8 @@
 var date = (function() {
   var $, today, selected, MyDate,
     flushToday, flushYear, flushMonth, flushDay, flushBoard,
-    initModule,
-    
+    initModule, getSelectedDate, setSelectedDate,
+
     dateOnClick, yearOnChange, monthOnChange;
 
   $ = {
@@ -65,7 +65,7 @@ var date = (function() {
   };
 
   flushDay = function (date) {
-    var i, len, cur, dayOf1st, lastDate;
+    var i, len, cur, dateOf1st, idxOfLastDate;
 
     // cleanup old date class
     for (i = 0, len = $.spanDays.length; i < len; i++) {
@@ -75,28 +75,31 @@ var date = (function() {
       $.spanDays[i].classList.remove("selected");
     }
 
-    dayOf1st = (new Date(date.year, date.month)).getDay();
+    dateOf1st = (new Date(date.year, date.month)).getDay();
 
-    lastDate = dayOf1st + 31;/*TODO*/
+    idxOfLastDate = dateOf1st + new Date((new Date(date.year, date.month+1) - 1)).getDate();
 
     cur = 1;
-    for (i = dayOf1st, len = dayOf1st + 31/*TODO*/; i < len; i++) {
+    for (i = dateOf1st, len = idxOfLastDate; i < len; i++) {
         $.spanDays[i].innerText = cur;
         if (cur === today.date && date.year === today.year && date.month === today.month) {
           $.spanDays[i].classList.add("today");
+        }
+        if (cur === date.date) {
+          date.idx = i;
         }
         cur += 1;
     }
 
     cur = 1;
-    for (i = lastDate, len = $.spanDays.length; i < len; i++) {
+    for (i = idxOfLastDate, len = $.spanDays.length; i < len; i++) {
         $.spanDays[i].innerText = cur;
         $.spanDays[i].classList.add('next-month');
         cur += 1;
     }
 
     cur = new Date((new Date(date.year, date.month) - 1)).getDate();
-    for (i = dayOf1st - 1;i >= 0; i--) {
+    for (i = dateOf1st - 1;i >= 0; i--) {
         $.spanDays[i].innerText = cur;
         $.spanDays[i].classList.add('previous-month');
         cur -= 1;
@@ -143,6 +146,25 @@ var date = (function() {
     flushBoard();
   }
 
+  getSelectedDate = function () {
+    var cur = new MyDate();
+    cur.year = Number($.selectYear.selectedOptions[0].innerText);
+    cur.month = Number($.selectMonth.selectedIndex);
+    cur.date = Number(document.getElementsByClassName("selected")[0].innerText);
+    return cur;
+  }
+
+  setSelectedDate = function (year, month, date) {
+    var cur = new MyDate();
+    cur.year = year;
+    cur.month = month;
+    cur.date = date;
+    flushYear(cur);
+    flushMonth(cur);
+    flushDay(cur);
+    dateOnClick(cur.idx).apply($.spanDays[cur.idx]);
+  }
+
   initModule = function () {
     var i, len;
     flushToday();
@@ -161,5 +183,9 @@ var date = (function() {
 
 
   initModule()
-  return {};
+  return {
+    getSelectedDate: getSelectedDate,
+    setSelectedDate: setSelectedDate,
+    initModule: initModule
+  };
 }());
