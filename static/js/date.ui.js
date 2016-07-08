@@ -12,12 +12,14 @@ var date = (function() {
     flushToday, flushYear, flushMonth, flushDay, flushBoard,
     initModule, getSelectedDate, setSelectedDate,
 
-    dateOnClick, yearOnChange, monthOnChange;
+    dateOnClick, yearOnChange, monthOnChange, nextOnClick, previousOnClick;
 
   $ = {
     selectYear: document.getElementById("date-ui-year"),
     selectMonth: document.getElementById("date-ui-month"),
-    spanDays: document.getElementsByClassName("date-date")
+    spanDays: document.getElementsByClassName("date-date"),
+    buttonPrevious: document.getElementById("date-previous"),
+    buttonNext: document.getElementById("date-next")
   };
 
   MyDate = function () {
@@ -85,6 +87,9 @@ var date = (function() {
         if (cur === today.date && date.year === today.year && date.month === today.month) {
           $.spanDays[i].classList.add("today");
         }
+        if (cur == selected.date && date.year === selected.year && date.month === selected.month) {
+          $.spanDays[i].classList.add("selected");
+        }
         if (cur === date.date) {
           date.idx = i;
         }
@@ -147,10 +152,15 @@ var date = (function() {
   }
 
   getSelectedDate = function () {
-    var cur = new MyDate();
+    var cur = new MyDate(), selected;
     cur.year = Number($.selectYear.selectedOptions[0].innerText);
     cur.month = Number($.selectMonth.selectedIndex);
-    cur.date = Number(document.getElementsByClassName("selected")[0].innerText);
+    selected = document.getElementsByClassName("selected");
+    if (0 !== selected.length) {
+      cur.date = Number(document.getElementsByClassName("selected")[0].innerText);
+    } else {
+      cur.date = null;
+    }
     return cur;
   }
 
@@ -165,6 +175,33 @@ var date = (function() {
     dateOnClick(cur.idx).apply($.spanDays[cur.idx]);
   }
 
+  previousOnClick = function () {
+      var cur = getSelectedDate();
+      cur.date = null;
+      cur.month -= 1;
+      if (-1 === cur.month) {
+        cur.month = 11;
+        cur.year -= 1;
+      }
+      flushYear(cur);
+      flushMonth(cur);
+      flushDay(cur);
+  }
+
+  nextOnClick = function () {
+      var cur = getSelectedDate();
+      cur.date = null;
+      cur.month += 1;
+      if (12 === cur.month) {
+        cur.month = 0;
+        cur.year += 1;
+      }
+      flushYear(cur);
+      flushMonth(cur);
+      flushDay(cur);
+  }
+
+
   initModule = function () {
     var i, len;
     flushToday();
@@ -178,6 +215,8 @@ var date = (function() {
 
     $.selectYear.addEventListener("change", yearOnChange);
     $.selectMonth.addEventListener("change", monthOnChange);
+    $.buttonPrevious.addEventListener("click", previousOnClick);
+    $.buttonNext.addEventListener("click", nextOnClick);
   }
 
 

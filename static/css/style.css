@@ -17,7 +17,7 @@
 }
 
 
-.date-header form {
+.date-header .date-selector {
   position: absolute;
   width: 200px;
   left: 50%;
@@ -27,7 +27,7 @@
   height: 24px;
 }
 
-.date-header form button {
+.date-header .date-selector button {
   background-color: transparent;
   border: none;
 }
