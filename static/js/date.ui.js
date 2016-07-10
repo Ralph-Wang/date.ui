@@ -8,18 +8,104 @@
 
 
 var date = (function() {
-  var $, today, selected, MyDate,
+  var $, html, today, selected, MyDate,
     flushToday, flushYear, flushMonth, flushDay, flushBoard,
-    initModule, getSelectedDate, setSelectedDate,
+    initModule, initDocument, getSelectedDate, setSelectedDate,
 
     dateOnClick, yearOnChange, monthOnChange, nextOnClick, previousOnClick;
 
+  html = '<div class="date">' +
+    '<div class="date-header">' +
+        '<div class="date-selector">' +
+          '<button id="date-previous"><-</button>' +
+          '<select id="date-ui-month">' +
+            '<option value="0">Jan.</option>' +
+            '<option value="1">Feb.</option>' +
+            '<option value="2">Mar.</option>' +
+            '<option value="3">Apr.</option>' +
+            '<option value="4">May.</option>' +
+            '<option value="5">June.</option>' +
+            '<option value="6">July.</option>' +
+            '<option value="7">Aug.</option>' +
+            '<option value="8">Sept.</option>' +
+            '<option value="9">Oct.</option>' +
+            '<option value="10">Nov.</option>' +
+            '<option value="11">Dec.</option>' +
+          '</select>' +
+          '<select id="date-ui-year">' +
+            '<option value="-5">0</option>' +
+            '<option value="-4">0</option>' +
+            '<option value="-3">0</option>' +
+            '<option value="-2">0</option>' +
+            '<option value="-1">0</option>' +
+            '<option value="0">0</option>' +
+            '<option value="1">0</option>' +
+            '<option value="2">0</option>' +
+            '<option value="3">0</option>' +
+            '<option value="4">0</option>' +
+            '<option value="5">0</option>' +
+          '</select>' +
+          '<button id="date-next">-></button>' +
+        '</div>' +
+    '</div>' +
+    '<div class="date-body">' +
+      '<span class="date-week">Sun.</span>' +
+      '<span class="date-week">Mon.</span>' +
+      '<span class="date-week">Tue.</span>' +
+      '<span class="date-week">Wed.</span>' +
+      '<span class="date-week">Thu.</span>' +
+      '<span class="date-week">Fri.</span>' +
+      '<span class="date-week">Sta.</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+      '<span class="date-date">1</span>' +
+    '</div>' +
+  '</div>';
   $ = {
-    selectYear: document.getElementById("date-ui-year"),
-    selectMonth: document.getElementById("date-ui-month"),
-    spanDays: document.getElementsByClassName("date-date"),
-    buttonPrevious: document.getElementById("date-previous"),
-    buttonNext: document.getElementById("date-next")
+    selectYear: null,
+    selectMonth: null,
+    spanDays: null,
+    buttonPrevious: null,
+    buttonNext: null
   };
 
   MyDate = function () {
@@ -238,9 +324,20 @@ var date = (function() {
       flushDay(cur);
   }
 
+  initDocument = function () {
+      $.selectYear = document.getElementById("date-ui-year");
+      $.selectMonth = document.getElementById("date-ui-month");
+      $.spanDays = document.getElementsByClassName("date-date");
+      $.buttonPrevious = document.getElementById("date-previous");
+      $.buttonNext = document.getElementById("date-next");
+  };
+
 
   initModule = function () {
-    var i, len;
+    var i, len, dom;
+    dom = document.getElementById('date.ui');
+    dom.innerHTML = html;
+    initDocument();
     flushToday();
     flushYear(today);
     flushMonth(today);
