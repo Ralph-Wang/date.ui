@@ -33,7 +33,31 @@ var date = (function() {
     return this.year + '.' + this.month + '.' + this.date + '.' + this.idx;
   }
 
+  MyDate.prototype.getPrevoiusMonth = function () {
+    var previous = new MyDate();
+    previous.date = null;
+    if (0 === this.month) {
+      previous.month = 11;
+      previous.year = this.year - 1;
+    } else {
+      previous.month = this.month - 1;
+      previous.year = this.year;
+    }
+    return previous;
+  }
 
+  MyDate.prototype.getNextMonth = function () {
+    var next = new MyDate();
+    next.date = null;
+    if (11 === this.month) {
+      next.month = 0;
+      next.year = this.year + 1;
+    } else {
+      next.month = this.month + 1;
+      next.year = this.year;
+    }
+    return next;
+  }
 
   selected = new MyDate();
 
@@ -70,7 +94,7 @@ var date = (function() {
   };
 
   flushDay = function (date) {
-    var i, len, cur, dateOf1st, idxOfLastDate;
+    var i, len, cur, dateOf1st, idxOfLastDate, previous, next;
 
     // cleanup old date class
     for (i = 0, len = $.spanDays.length; i < len; i++) {
@@ -101,16 +125,30 @@ var date = (function() {
     }
 
     cur = 1;
+    next = date.getNextMonth();
     for (i = idxOfLastDate, len = $.spanDays.length; i < len; i++) {
         $.spanDays[i].innerText = cur;
         $.spanDays[i].classList.add('next-month');
+        if (cur === selected.date &&
+          next.year === selected.year && next.month === selected.month
+          ) {
+          $.spanDays[i].classList.add("selected");
+          selected.idx = i;
+        }
         cur += 1;
     }
 
     cur = new Date((new Date(date.year, date.month) - 1)).getDate();
+    previous = date.getPrevoiusMonth();
     for (i = dateOf1st - 1;i >= 0; i--) {
         $.spanDays[i].innerText = cur;
         $.spanDays[i].classList.add('previous-month');
+        if (cur == selected.date &&
+          previous.year === selected.year && previous.month === selected.month
+          ) {
+          $.spanDays[i].classList.add("selected");
+          selected.idx = i;
+        }
         cur -= 1;
     }
   };
@@ -187,26 +225,14 @@ var date = (function() {
   }
 
   previousOnClick = function () {
-      var cur = getSelectedDate();
-      cur.date = null;
-      cur.month -= 1;
-      if (-1 === cur.month) {
-        cur.month = 11;
-        cur.year -= 1;
-      }
+      var cur = getSelectedDate().getPrevoiusMonth();
       flushYear(cur);
       flushMonth(cur);
       flushDay(cur);
   }
 
   nextOnClick = function () {
-      var cur = getSelectedDate();
-      cur.date = null;
-      cur.month += 1;
-      if (12 === cur.month) {
-        cur.month = 0;
-        cur.year += 1;
-      }
+      var cur = getSelectedDate().getNextMonth();
       flushYear(cur);
       flushMonth(cur);
       flushDay(cur);
