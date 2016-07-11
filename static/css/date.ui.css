@@ -27,6 +27,10 @@
   height: 24px;
 }
 
+.date-header .date-selector * {
+  margin: 0 3px;
+}
+
 .date-header .date-selector button {
   background-color: transparent;
   border: none;
